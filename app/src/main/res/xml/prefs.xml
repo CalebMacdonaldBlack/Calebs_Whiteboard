@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:title="Host Name/ IP Address"
+        android:key="hostName"
+        android:defaultValue="dinodan.is-into-anime.com"
+        android:summary="Enter Your Server IP or Domain Name"/>
+
+    <CheckBoxPreference
+        android:title="Is host address a domain name?"
+        android:defaultValue="true"
+        android:key="isHostNameCheckbox"
+        android:summary="check if hostname is a domain name"
+        />
+
+
+</PreferenceScreen>

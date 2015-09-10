@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/clearScreen"
+        android:alphabeticShortcut="a"
+        android:numericShortcut="1"
+        android:title="Clear the screen"
+        />
+    <item
+        android:id="@+id/updateScreen"
+        android:alphabeticShortcut="a"
+        android:numericShortcut="1"
+        android:title="Clear the screen"
+        />
+
+    <item android:title="Preferences"
+        android:id="@+id/preferences"
+        />
+    <item android:title="Exit"
+        android:id="@+id/exit"
+        />
+
+
+</menu>
