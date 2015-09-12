@@ -1,14 +1,14 @@
 package com.example.calebmacdonaldblack.myapplication;
 
-import android.graphics.Color;
-import android.view.View;
 import android.content.Context;
-import android.util.AttributeSet;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * Created by calebmacdonaldblack on 6/09/15.
@@ -29,7 +29,6 @@ public class DrawingView extends View {
     //canvas bitmap
     private Bitmap canvasBitmap;
     //maximum paths/users
-    private static final int pathQty = 5;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -80,7 +79,6 @@ public class DrawingView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //detect user touch and assign information to Int array for socket output
-        checkConnection();
         if (MainActivity.clientID != 0 && MainActivity.loaded == true) {
             int action = 0;
 
@@ -101,10 +99,6 @@ public class DrawingView extends View {
         }
 
         return true;
-    }
-
-    private void checkConnection() {
-        //MainActivity.rc.sendObjectToServer("test");
     }
 
     public void executeTouchEvent(int[] i) {

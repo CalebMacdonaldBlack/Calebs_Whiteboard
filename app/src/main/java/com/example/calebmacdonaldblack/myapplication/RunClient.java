@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import static com.example.calebmacdonaldblack.myapplication.MainActivity.clearScreen;
-import static com.example.calebmacdonaldblack.myapplication.MainActivity.clientID;
 import static com.example.calebmacdonaldblack.myapplication.MainActivity.loaded;
 
 
@@ -27,12 +26,13 @@ public class RunClient implements Runnable {
 
     @Override
     public void run() {
+
         startRunning();
     }
 
     private void startRunning() {
         //repeatedly attempt a connection
-        while (running) try {
+        while (true) try {
             connectToServer();
             setupStreams();
             whileReceiving();
@@ -42,6 +42,7 @@ public class RunClient implements Runnable {
             Log.i("RunClient", "connection Terminated");
 
         } catch (IOException ignored) {
+            ignored.printStackTrace();
         }
     }
 
@@ -63,12 +64,16 @@ public class RunClient implements Runnable {
                 if (!(eventArray[0] == -1))
                     if (!(eventArray[4] == MainActivity.clientID) || loaded == false)
                         MainActivity.drawView.executeTouchEvent(eventArray);
+                    else
+                        System.out.println("Failed second condition");
+                else
+                    System.out.println("Failed first condition");
             } catch (ClassNotFoundException classNotFoundException) {
                 Log.i("RunClient", "Server did not send an event");
             } catch (ClassCastException classCastException) {
                 String command = (String) obj;
                 initiateCommand(command);
-            } catch(NullPointerException ignored){
+            } catch (NullPointerException ignored) {
 
             }
 
@@ -90,9 +95,8 @@ public class RunClient implements Runnable {
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
         input = new ObjectInputStream(connection.getInputStream());
-
         //get client ID sending. sending this will return clientID from server
-        int[] intObj = {-2, 0, 0, 0, 0, 0};
+        int[] intObj = {-1, 0, 0, 0, 0, 0};
         output.writeObject(intObj);
         Log.i("RunClient", "streams are connected");
         connectionStatus = true;
@@ -113,23 +117,17 @@ public class RunClient implements Runnable {
         try {
 
             connectToAddress();
-            Log.i("RunClient", "connected to" + connection.getInetAddress().getHostName());
+            Log.i("RunClient", "connected to " + connection.getInetAddress().getHostName());
         } catch (IOException e) {
             onDisconnect();
         }
-
-        //not sure why this is here. too scared to remove
-        if (connection == null)
-            throw new IOException();
-
     }
 
     private void connectToAddress() throws IOException {
-        if(MainActivity.isHostName)
+        if (MainActivity.isHostName)
             connection = new Socket(InetAddress.getByName(MainActivity.hostName), 9090);
         else
             connection = new Socket(MainActivity.hostName, 9090);
-
 
 
     }
