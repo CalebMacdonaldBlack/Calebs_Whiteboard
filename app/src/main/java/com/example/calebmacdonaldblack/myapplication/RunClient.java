@@ -18,11 +18,17 @@ import static com.example.calebmacdonaldblack.myapplication.MainActivity.loaded;
  */
 public class RunClient implements Runnable {
 
+    private final MainActivity context;
     private ObjectOutputStream output;
     private ObjectInputStream input;
     private Socket connection;
     private boolean running = true;
     public static boolean connectionStatus = false;
+
+    public RunClient(MainActivity mainActivity) {
+        context = mainActivity;
+    }
+
 
     @Override
     public void run() {
@@ -85,6 +91,7 @@ public class RunClient implements Runnable {
         if (command.equals("clearScreen")) {
             clearScreen();
         } else if (command.equals("eventsLoaded")) {
+            MainActivity.progressDialog.dismiss();
             MainActivity.loaded = true;
         }
 
@@ -110,6 +117,9 @@ public class RunClient implements Runnable {
 
         //inform that connection was established, this clears the canvas
         clearScreen();
+
+        MainActivity.progressDialog.dismiss();
+        MainActivity.openProgressDialog("Loading", "Drawing onto screen, please wait");
     }
 
     private void connectToServer() throws IOException {

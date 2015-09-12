@@ -1,11 +1,13 @@
 package com.example.calebmacdonaldblack.myapplication;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +23,12 @@ public class MainActivity extends AppCompatActivity {
     public static RunClient rc;
     public static Thread thread;
     public static int clientID = 0;
+    public static final int maxClients = 10;
     public static String hostName;
     public static boolean isHostName;
+    public static Runnable progressDialogRunnable;
+    public static ProgressDialog progressDialog;
+    public static Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         drawView = (DrawingView) findViewById(R.id.drawing);
+
+        MainActivity.context = this;
+        openProgressDialog("Loading", "Connecting to Server");
+
         LinearLayout paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
         currPaint = (ImageButton) paintLayout.getChildAt(0);
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
@@ -38,13 +48,10 @@ public class MainActivity extends AppCompatActivity {
         hostName = getPrefs.getString("hostName", "dinodan.is-into-anime.com");
         isHostName = getPrefs.getBoolean("isHostNameCheckbox", true);
         loaded = false;
-        try {
-            thread.isAlive();
-            rc.sendObjectToServer("reqData");
-        } catch (NullPointerException ignore) {
-            thread = new Thread(rc = new RunClient());
-            thread.start();
-        }
+
+
+        thread = new Thread(rc = new RunClient(this));
+        thread.start();
 
 
     }
@@ -54,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.exit(0);
     }
 
     @Override
@@ -99,5 +112,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static void clearScreen() {
         drawView.clearCanvas();
+    }
+
+    public static void openProgressDialog(final String title, final String message) {
+        MainActivity.context.runOnUiThread(progressDialogRunnable = new Runnable() {
+            public void run() {
+
+                MainActivity.progressDialog = MainActivity.progressDialog.show(MainActivity.context, title, message, true);
+            }
+        });
     }
 }

@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.HashMap;
+
 /**
  * Created by calebmacdonaldblack on 6/09/15.
  */
@@ -17,13 +19,16 @@ import android.view.View;
 
 public class DrawingView extends View {
 
-    //initial color
-    public int paintColor = 0xFF660000;
+    private int maxClients;
     //drawing path
-    private Path[] drawPath = new Path[5];
+    private Path[] drawPath;
+    private HashMap<Integer, Path> drawPathMap;
+    private HashMap<Integer, Paint> drawPaintMap;
     //drawing and canvas paint
     private Paint canvasPaint;
-    private Paint[] drawPaint = new Paint[5];
+    private Paint[] drawPaint;
+    //initial color
+    public int paintColor = 0xFF660000;
     //canvas
     private Canvas drawCanvas;
     //canvas bitmap
@@ -37,7 +42,9 @@ public class DrawingView extends View {
 
     private void setupDrawing() {
         //get drawing area setup for interaction
-
+        maxClients = MainActivity.maxClients;
+        drawPath = new Path[maxClients];
+        drawPaint = new Paint[maxClients];
         //initialize all line path and paint instances
         for (int i = 0; i < drawPath.length; i++) {
             drawPath[i] = new Path();
