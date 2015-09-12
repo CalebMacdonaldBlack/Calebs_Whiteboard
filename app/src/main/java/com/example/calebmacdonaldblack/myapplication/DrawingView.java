@@ -17,13 +17,13 @@ import android.view.View;
 
 public class DrawingView extends View {
 
+    //initial color
+    public int paintColor = 0xFF660000;
     //drawing path
     private Path[] drawPath = new Path[5];
     //drawing and canvas paint
     private Paint canvasPaint;
     private Paint[] drawPaint = new Paint[5];
-    //initial color
-    public int paintColor = 0xFF660000;
     //canvas
     private Canvas drawCanvas;
     //canvas bitmap
