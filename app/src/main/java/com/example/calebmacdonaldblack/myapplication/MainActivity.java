@@ -134,8 +134,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        System.exit(0);
+    protected void onResume() {
+        super.onResume();
+        Thread.interrupted();
+        thread = new Thread(rc = new RunClient(this));
     }
 }
