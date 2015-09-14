@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static Runnable progressDialogRunnable;
     public static ProgressDialog progressDialog;
     public static Activity context;
+    public static boolean hasConnected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         drawView = (DrawingView) findViewById(R.id.drawing);
 
         MainActivity.context = this;
-        openProgressDialog("Loading", "Connecting to Server");
+        openProgressDialog("Loading", "Connecting to Server", progressDialog);
 
         LinearLayout paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
         currPaint = (ImageButton) paintLayout.getChildAt(0);
@@ -114,12 +116,27 @@ public class MainActivity extends AppCompatActivity {
         drawView.clearCanvas();
     }
 
-    public static void openProgressDialog(final String title, final String message) {
+    public static void openProgressDialog(final String title, final String message, final ProgressDialog d) {
         MainActivity.context.runOnUiThread(progressDialogRunnable = new Runnable() {
             public void run() {
-
                 MainActivity.progressDialog = MainActivity.progressDialog.show(MainActivity.context, title, message, true);
+
+                try {
+                    timerDelayRemoveDialog(20000, d);
+                } catch (NullPointerException ignore) {
+
+                }
             }
         });
+    }
+
+    public static void timerDelayRemoveDialog(long time, final ProgressDialog d) throws NullPointerException {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                if (RunClient.connectionStatus) ;
+                d.dismiss();
+                MainActivity.rc.stopRunning();
+            }
+        }, time);
     }
 }

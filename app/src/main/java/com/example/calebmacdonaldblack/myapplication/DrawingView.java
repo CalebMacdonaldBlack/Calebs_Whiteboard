@@ -142,7 +142,6 @@ public class DrawingView extends View {
         canvasBitmap.eraseColor(Color.TRANSPARENT);
         drawCanvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         for (int i = 0; i < drawPath.length; i++) {
-            drawPath[i].reset(); //error could be here last thing i changed without testing
         }
         postInvalidate();
     }

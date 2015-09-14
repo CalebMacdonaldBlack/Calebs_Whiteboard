@@ -38,7 +38,7 @@ public class RunClient implements Runnable {
 
     private void startRunning() {
         //repeatedly attempt a connection
-        while (true) try {
+        while (running) try {
             connectToServer();
             setupStreams();
             whileReceiving();
@@ -119,7 +119,7 @@ public class RunClient implements Runnable {
         clearScreen();
 
         MainActivity.progressDialog.dismiss();
-        MainActivity.openProgressDialog("Loading", "Drawing onto screen, please wait");
+        MainActivity.openProgressDialog("Loading", "Drawing onto screen, please wait", null);
     }
 
     private void connectToServer() throws IOException {
