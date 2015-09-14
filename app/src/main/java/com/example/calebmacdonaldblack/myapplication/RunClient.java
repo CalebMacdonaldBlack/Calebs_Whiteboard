@@ -32,7 +32,6 @@ public class RunClient implements Runnable {
 
     @Override
     public void run() {
-
         startRunning();
     }
 

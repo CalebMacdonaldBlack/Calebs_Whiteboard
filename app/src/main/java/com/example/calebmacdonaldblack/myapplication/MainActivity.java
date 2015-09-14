@@ -64,13 +64,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        System.exit(0);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -138,5 +131,11 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.rc.stopRunning();
             }
         }, time);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.exit(0);
     }
 }
